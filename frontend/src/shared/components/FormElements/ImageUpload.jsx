@@ -5,7 +5,7 @@ import Button from "./Button";
 export default function ImageUpload({ id, center, onInput }) {
   const filePickerRef = useRef();
   const [file, setFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState();
+  const [previewUrl, setPreviewUrl] = useState()
   const [isValid, setIsValid] = useState(false);
 
   function pickImageHandler() {
