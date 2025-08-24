@@ -1,5 +1,3 @@
-const NewPlace = () => {
-    return <h2>New Places</h2>
+export default function NewPlace() {
+    return <h2>New Places</h2>;
 }
-
-export default NewPlace;
