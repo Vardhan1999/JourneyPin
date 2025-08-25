@@ -2,10 +2,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Users from "./user/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
 import RootLayout from "./shared/components/Layout/RootLayout";
+import UserPlaces from "./places/pages/UserPlaces";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <RootLayout />,
     children: [
       {
@@ -16,9 +17,12 @@ const router = createBrowserRouter([
         path: "places/new",
         element: <NewPlace />,
       },
-    ]
-  }
-
+      {
+        path: ":userId/places",
+        element: <UserPlaces />,
+      },
+    ],
+  },
 ]);
 
 const App = () => {
