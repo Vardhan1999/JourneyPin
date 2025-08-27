@@ -29,10 +29,12 @@ export default function Input({
   errorText,
   validators,
   onInput,
+  initialValue,
+  initialValid
 }) {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: '',
-    isValid: false,
+    value: initialValue || '',
+    isValid: initialValid || false,
     isTouched: false,
   });
 
