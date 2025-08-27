@@ -3,6 +3,8 @@ import Card from "../../shared/components/UIElements/Card";
 import Button from '../../shared/components/FormElements/Button';
 import { useState } from 'react';
 import Modal from '../../shared/components/UIElements/Modal';
+import Map from '../../shared/components/UIElements/Map';
+
 
 export default function PlaceItem({ id, image, title, address, description, creatorId, coordinates }) {
   const [showMap, setShowMap] = useState(false);
@@ -22,7 +24,7 @@ export default function PlaceItem({ id, image, title, address, description, crea
       >
         <div className="map-container">
           {/* Replace this placeholder with Google Maps or Leaflet later */}
-          <h2>The Map</h2>
+          <h2><Map center={coordinates} zoom={10}/></h2>
         </div>
       </Modal>
 
