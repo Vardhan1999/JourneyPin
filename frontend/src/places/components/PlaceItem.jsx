@@ -1,22 +1,24 @@
 import './PlaceItem.css';
 import Card from "../../shared/components/UIElements/Card";
 import Button from '../../shared/components/FormElements/Button';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Modal from '../../shared/components/UIElements/Modal';
 import Map from '../../shared/components/UIElements/Map';
+import AuthContext from '../../shared/store/AuthContext';
 
-export default function PlaceItem({ 
-  id, 
-  image, 
-  title, 
-  address, 
-  description, 
-  creatorId, 
-  coordinates, 
+export default function PlaceItem({
+  id,
+  image,
+  title,
+  address,
+  description,
+  creatorId,
+  coordinates,
   onDelete // 👈 pass delete handler from parent
 }) {
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const authContext = useContext(AuthContext);
 
   // Handlers for Map modal
   const openMapHandler = () => setShowMap(true);
@@ -29,7 +31,7 @@ export default function PlaceItem({
   const confirmDeleteHandler = () => {
     setShowConfirmModal(false);
     console.log(`Deleting place with id: ${id}`);
-   
+
   };
 
   return (
@@ -62,7 +64,7 @@ export default function PlaceItem({
         }
       >
         <p>
-          Do you want to proceed and delete this place? 
+          Do you want to proceed and delete this place?
           <br />
           <strong>Please note that it can't be undone thereafter.</strong>
         </p>
@@ -81,8 +83,8 @@ export default function PlaceItem({
           </div>
           <div className="place-item__actions">
             <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
-            <Button to={`/places/${id}`}>EDIT</Button>
-            <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
+            {authContext.isLoggedIn && <Button to={`/places/${id}`}>EDIT</Button>}
+            {authContext.isLoggedIn && <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>}
           </div>
         </Card>
       </li>

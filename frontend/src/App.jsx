@@ -5,38 +5,51 @@ import RootLayout from "./shared/components/Layout/RootLayout";
 import UserPlaces from "./places/pages/UserPlaces";
 import UpdatePlace from "./places/pages/UpdatePlace";
 import Auth from "./user/pages/Auth";
+import { AuthContextProvider } from "./shared/store/AuthContext";
+import ProtectedRoute from "./shared/components/Layout/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
-      {
-        index: true,
-        element: <Users />,
-      },
+      // Public routes
+      { index: true, element: <Users /> },
+      { path: "auth", element: <Auth /> },
+
+      // Protected routes
       {
         path: "places/new",
-        element: <NewPlace />,
+        element: (
+          <ProtectedRoute>
+            <NewPlace />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "places/:placeId",
-        element: <UpdatePlace />,
+        element: (
+          <ProtectedRoute>
+            <UpdatePlace />
+          </ProtectedRoute>
+        ),
       },
       {
         path: ":userId/places",
-        element: <UserPlaces />,
-      },
-      {
-        path: "/auth",
-        element: <Auth />,
+        element: (
+          <ProtectedRoute>
+            <UserPlaces />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
 ]);
 
-const App = () => {
-  return <RouterProvider router={router} />;
-};
+const App = () => (
+  <AuthContextProvider>
+    <RouterProvider router={router} />
+  </AuthContextProvider>
+);
 
 export default App;
