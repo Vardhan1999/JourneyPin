@@ -1,5 +1,7 @@
 // Import Express
 const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 // Import route handlers
 const placesRoutes = require('./routes/places-routes');
@@ -31,7 +33,12 @@ app.use((error, req, res, next) => {
     .json({ message: error.message || 'An unknown error occurred!' });
 });
 
-// Start server
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(process.env.PORT || 3000, () => {
+      console.log(`Server running on port ${process.env.PORT || 3000}`);
+    });
+  })
+  .catch(err => console.log(err));
+
