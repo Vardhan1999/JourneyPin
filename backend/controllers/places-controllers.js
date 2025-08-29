@@ -3,7 +3,7 @@ const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
 const geocodeAddress = require('../util/location');
 const Place = require('../models/place');
-
+const User = require('../models/user');
 
 exports.getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
