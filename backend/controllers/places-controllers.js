@@ -66,8 +66,24 @@ exports.createPlace = async (req, res, next) => {
     creator
   });
 
+  let existingUser;
   try {
-    await createdPlace.save();
+    existingUser = await User.findById(creator);
+  } catch (err) {
+    return next(new HttpError('Creating place failed, please try again.', 500));
+  }
+
+  if (!existingUser) {
+    return next(new HttpError('Could not find user for provided id.', 404));
+  }
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await createdPlace.save({ session });
+    existingUser.places.push(createdPlace);
+    await existingUser.save({ session });
+    await session.commitTransaction();
   } catch (err) {
     return next(new HttpError('Creating place failed, please try again.', 500));
   }
