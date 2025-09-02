@@ -28,11 +28,32 @@ export default function PlaceItem({
   const showDeleteWarningHandler = () => setShowConfirmModal(true);
   const cancelDeleteHandler = () => setShowConfirmModal(false);
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log(`Deleting place with id: ${id}`);
 
+    try {
+      const response = await fetch(`http://localhost:3000/api/places/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Response('Failed to delete the place.', { status: 500 });
+      }
+
+      onDelete(id);
+
+    } catch (err) {
+      console.error(err);
+      throw new Response('Something went wrong while deleting the place.', {
+        status: 500,
+        statusText: 'Internal Server Error'
+      });
+    }
   };
+
 
   return (
     <>
@@ -83,8 +104,8 @@ export default function PlaceItem({
           </div>
           <div className="place-item__actions">
             <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
-            {authContext.isLoggedIn && <Button to={`/places/${id}`}>EDIT</Button>}
-            {authContext.isLoggedIn && <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>}
+            {authContext.userId === creatorId && <Button to={`/places/${id}`}>EDIT</Button>}
+            {authContext.userId === creatorId && <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>}
           </div>
         </Card>
       </li>
