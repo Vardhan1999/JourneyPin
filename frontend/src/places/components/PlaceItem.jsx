@@ -14,7 +14,7 @@ export default function PlaceItem({
   description,
   creatorId,
   coordinates,
-  onDelete // 👈 pass delete handler from parent
+  onDelete
 }) {
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);

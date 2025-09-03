@@ -2,28 +2,29 @@ import { createContext, useReducer } from "react";
 
 const AuthContext = createContext({
   isLoggedIn: false,
-  login: () => {},
-  logout: () => {},
+  userId: null,
+  login: () => { },
+  logout: () => { },
 });
 
 // Reducer function using if/else
 function authReducer(state, action) {
   if (action.type === "LOGIN") {
-    return { isLoggedIn: true };
+    return { isLoggedIn: true, userId: action.userId };
   }
 
   if (action.type === "LOGOUT") {
-    return { isLoggedIn: false };
+    return { isLoggedIn: false, userId: null };
   }
 
   return state; // fallback for unknown actions
 }
 
 export function AuthContextProvider({ children }) {
-  const [state, dispatch] = useReducer(authReducer, { isLoggedIn: false });
+  const [state, dispatch] = useReducer(authReducer, { isLoggedIn: false, userId: null, });
 
-  const login = () => {
-    dispatch({ type: "LOGIN" });
+  const login = (uid) => {
+    dispatch({ type: "LOGIN", userId: uid });
   };
 
   const logout = () => {
@@ -32,6 +33,7 @@ export function AuthContextProvider({ children }) {
 
   const authContext = {
     isLoggedIn: state.isLoggedIn,
+    userId: state.userId,
     login,
     logout,
   };

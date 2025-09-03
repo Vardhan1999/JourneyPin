@@ -56,6 +56,7 @@ export default function Input({
     element === 'input' ? (
       <input
         id={id}
+        name={id}
         type={type}
         placeholder={placeholder}
         onChange={onChangeHandler}
@@ -65,6 +66,7 @@ export default function Input({
     ) : (
       <textarea
         id={id}
+        name={id}
         rows={rows || 3}
         onChange={onChangeHandler}
         onBlur={touchHandler}

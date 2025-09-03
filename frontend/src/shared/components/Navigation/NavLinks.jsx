@@ -21,7 +21,7 @@ export default function NavLinks() {
       {authContext.isLoggedIn && (
         <>
           <li>
-            <NavLink to="/u1/places" className={navLinkClass}>
+            <NavLink to={`/${authContext.userId}/places`} className={navLinkClass}>
               MY PLACES
             </NavLink>
           </li>

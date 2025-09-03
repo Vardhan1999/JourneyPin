@@ -9,7 +9,7 @@ export default function Users() {
 
 export async function loader() {
     const response = await fetch("http://localhost:3000/api/users");
-
+    
     if (!response.ok) {
         throw new Response("Failed to fetch users", { status: response.status });
     }

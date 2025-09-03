@@ -63,7 +63,7 @@ exports.createPlace = async (req, res, next) => {
     description,
     address,
     location: coordinates,
-    image: 'https://via.placeholder.com/600',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Marine_Drive_Skyline.jpg/500px-Marine_Drive_Skyline.jpg',
     creator
   });
 

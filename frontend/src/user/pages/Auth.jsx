@@ -49,7 +49,7 @@ export default function Auth() {
                 if (!response.ok) {
                     throw new Error(responseData.message || "Login failed!");
                 }
-                authContext.login();
+                authContext.login(responseData.user.id);
                 navigate("/");
             } catch (error) {
                 setError(error.message || "Something went wrong, please try again later.");
@@ -74,7 +74,7 @@ export default function Auth() {
                     throw new Error(responseData.message || "Signup failed!");
                 }
 
-                authContext.login();
+                authContext.login(responseData.user.id);
                 navigate("/");
             } catch (error) {
                 setError(error.message || "Something went wrong, please try again later.");

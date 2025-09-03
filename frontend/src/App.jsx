@@ -1,18 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Users, { loader as usersLoader } from "./user/pages/Users";
-import NewPlace from "./places/pages/NewPlace";
+import NewPlace, { action as newPlaceAction } from "./places/pages/NewPlace";
 import RootLayout from "./shared/components/Layout/RootLayout";
-import UserPlaces from "./places/pages/UserPlaces";
-import UpdatePlace from "./places/pages/UpdatePlace";
+import UserPlaces, { loader as userPlacesLoader } from "./places/pages/UserPlaces";
+import UpdatePlace,{loader as updatePlaceLoader, action as updatePlaceAction} from "./places/pages/UpdatePlace";
 import Auth from "./user/pages/Auth";
 import { AuthContextProvider } from "./shared/store/AuthContext";
 import ProtectedRoute from "./shared/components/Layout/ProtectedRoute";
+import ErrorPage from "./shared/components/UIElements/ErrorPage";
+import LoadingSpinner from "./shared/components/UIElements/LoadingSpinner";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       // Public routes
       { index: true, element: <Users />, loader: usersLoader },
@@ -26,6 +29,7 @@ const router = createBrowserRouter([
             <NewPlace />
           </ProtectedRoute>
         ),
+        action: newPlaceAction
       },
       {
         path: "places/:placeId",
@@ -34,6 +38,8 @@ const router = createBrowserRouter([
             <UpdatePlace />
           </ProtectedRoute>
         ),
+        loader:updatePlaceLoader,
+        action:updatePlaceAction,
       },
       {
         path: ":userId/places",
@@ -42,6 +48,7 @@ const router = createBrowserRouter([
             <UserPlaces />
           </ProtectedRoute>
         ),
+        loader: userPlacesLoader
       },
     ],
   },
@@ -49,7 +56,7 @@ const router = createBrowserRouter([
 
 const App = () => (
   <AuthContextProvider>
-    <RouterProvider router={router} />
+    <RouterProvider router={router} fallbackElement={<LoadingSpinner />} />
   </AuthContextProvider>
 );
 
