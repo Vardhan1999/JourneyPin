@@ -47,3 +47,14 @@ Thumbs.db
 # Coverage
 coverage/
 *.lcov
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp
+*.bmp
+*.tiff
+*.ico
