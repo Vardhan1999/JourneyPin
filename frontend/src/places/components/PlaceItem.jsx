@@ -20,6 +20,9 @@ export default function PlaceItem({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const authContext = useContext(AuthContext);
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  const imageUrl = image ? `${backendUrl}/${image.replace(/\\/g, '/')}` : '';
+
   // Handlers for Map modal
   const openMapHandler = () => setShowMap(true);
   const closeMapHandler = () => setShowMap(false);
@@ -32,7 +35,7 @@ export default function PlaceItem({
     setShowConfirmModal(false);
 
     try {
-      const response = await fetch(`http://localhost:3000/api/places/${id}`, {
+      const response = await fetch(`${backendUrl}/api/places/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -53,7 +56,6 @@ export default function PlaceItem({
       });
     }
   };
-
 
   return (
     <>
@@ -95,7 +97,11 @@ export default function PlaceItem({
       <li className="place-item">
         <Card className="place-item__content">
           <div className="place-item__image">
-            <img src={image} alt={`Place: ${title}`} />
+            {imageUrl ? (
+              <img src={imageUrl} alt={`Place: ${title}`} />
+            ) : (
+              <p>No image available</p>
+            )}
           </div>
           <div className="place-item__info">
             <h2>{title}</h2>

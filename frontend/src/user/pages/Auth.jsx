@@ -71,7 +71,7 @@ export default function Auth() {
 
         const response = await fetch("http://localhost:3000/api/users/signup", {
           method: "POST",
-          body: formData, // no Content-Type header here
+          body: formData,
         });
 
         const responseData = await response.json();

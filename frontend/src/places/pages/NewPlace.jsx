@@ -6,14 +6,17 @@ import './PlaceForm.css';
 import useForm from '../../shared/hooks/form-hook';
 import { Form, redirect, useNavigation } from 'react-router-dom';
 import AuthContext from '../../shared/store/AuthContext';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 
 export default function NewPlace() {
   const authContext = useContext(AuthContext);
+
   const [formState, inputHandler] = useForm(
     {
       title: { value: '', isValid: false },
       address: { value: '', isValid: false },
-      description: { value: '', isValid: false }
+      description: { value: '', isValid: false },
+      image: { value: null, isValid: false },
     },
     false
   );
@@ -22,7 +25,7 @@ export default function NewPlace() {
   const isSubmitting = navigation.state === 'submitting';
 
   return (
-    <Form className="place-form" method="post">
+    <Form className="place-form" method="post" encType="multipart/form-data">
       <input type="hidden" name="creator" value={authContext.userId} />
 
       <Input
@@ -34,6 +37,7 @@ export default function NewPlace() {
         errorText="Please enter a valid title."
         onInput={inputHandler}
       />
+
       <Input
         id="address"
         element="input"
@@ -43,6 +47,14 @@ export default function NewPlace() {
         errorText="Please enter a valid address."
         onInput={inputHandler}
       />
+
+      <ImageUpload
+        id="image"
+        name="image"
+        onInput={inputHandler}
+        errorText="Please provide an image."
+      />
+
       <Input
         id="description"
         element="textarea"
@@ -51,6 +63,7 @@ export default function NewPlace() {
         errorText="Please enter at least 5 characters."
         onInput={inputHandler}
       />
+
       <Button type="submit" disabled={!formState.isValid || isSubmitting}>
         {isSubmitting ? 'Adding...' : 'ADD PLACE'}
       </Button>
@@ -60,20 +73,11 @@ export default function NewPlace() {
 
 export async function action({ request }) {
   const formData = await request.formData();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
-  const placeData = {
-    title: formData.get('title'),
-    address: formData.get('address'),
-    description: formData.get('description'),
-    creator: formData.get('creator')
-  };
-
-  const response = await fetch('http://localhost:3000/api/places', {
+  const response = await fetch(`${backendUrl}/api/places`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(placeData),
+    body: formData,
   });
 
   if (!response.ok) {
